@@ -16,7 +16,6 @@ class VonMisesFischerProposal(AbstractProposal):
         **kwargs,
     ) -> None:
         super().__init__(input_size=input_size)
-        print("Init Standard Gaussian...")
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
         assert (

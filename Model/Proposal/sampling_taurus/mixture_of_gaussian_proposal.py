@@ -16,7 +16,6 @@ class MixtureOfGaussianProposal(AbstractProposal):
         **kwargs,
     ) -> None:
         super().__init__(input_size=input_size)
-        print("Init Standard Gaussian...")
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.logit_pi = nn.Parameter(logit_pi, requires_grad=False)
         self.mu = nn.Parameter(mu, requires_grad=False)
@@ -59,7 +58,6 @@ class MixtureOfGeneralizedGaussianProposal(AbstractProposal):
         **kwargs,
     ) -> None:
         super().__init__(input_size=input_size)
-        print("Init Standard Gaussian...")
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.logit_pi = nn.Parameter(logit_pi, requires_grad=False)
         self.mu = nn.Parameter(mu, requires_grad=False)

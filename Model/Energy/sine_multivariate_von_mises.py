@@ -30,9 +30,13 @@ class SineMultivariateVonMisesEnergy(Energy):
         self.learn_lambda = learn_lambda
 
         if self.learn_theta:
-            self.theta = nn.Parameter(torch.ones(dim, dtype=torch.float32))
+            self.theta = nn.Parameter(
+                torch.randn(dim, dtype=torch.float32) % (2 * np.pi) - np.pi
+            )
         else:
-            self.register_buffer("theta", torch.ones(dim, dtype=torch.float32))
+            self.register_buffer(
+                "theta", torch.randn(dim, dtype=torch.float32) % (2 * np.pi) - np.pi
+            )
 
         if self.learn_kappa:
             self.log_kappa = nn.Parameter(torch.ones(dim, dtype=torch.float32))
@@ -127,7 +131,6 @@ class SineMultivariateVonMisesEnergy(Energy):
             torch.full_like(energy, 1e6),
             energy,
         )
-
         assert energy.shape[0] == x.shape[0]
         return energy
 

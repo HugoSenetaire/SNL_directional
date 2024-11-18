@@ -6,6 +6,7 @@ import torch.nn as nn
 from ...Energy.utils import get_cartesian_from_polar, get_polar_from_cartesian
 from ..abstract_proposal import AbstractProposal
 
+
 class VonMisesProposal(AbstractProposal):
     def __init__(
         self,
@@ -15,7 +16,6 @@ class VonMisesProposal(AbstractProposal):
         **kwargs,
     ) -> None:
         super().__init__(input_size=input_size)
-        print("Init Standard Gaussian...")
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.phi = nn.Parameter(phi, requires_grad=False)
         self.kappa = nn.Parameter(kappa, requires_grad=False)

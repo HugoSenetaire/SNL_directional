@@ -19,7 +19,6 @@ class MultivariateVonMisesProposal(AbstractProposal):
         **kwargs,
     ) -> None:
         super().__init__(input_size=input_size)
-        print("Init Standard Gaussian...")
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.phi = nn.Parameter(phi, requires_grad=False)
         self.kappa = nn.Parameter(kappa, requires_grad=False)
