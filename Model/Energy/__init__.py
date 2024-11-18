@@ -8,6 +8,7 @@ from .generalized_gaussian_mixture_vector_param import (
     GeneralizedGaussianMixtureEnergyVectorParam,
 )
 from .kent import KentEnergy
+from .mixture_sine_multivariate_von_mises import MixtureSineMultivariateVonMisesEnergy
 from .polar_von_mises_2d import PolarVonMisesEnergy
 from .sine_bivariate_von_mises_2d import SineBivariateVonMisesEnergy
 from .sine_multivariate_von_mises import SineMultivariateVonMisesEnergy
