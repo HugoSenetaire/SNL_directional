@@ -141,6 +141,7 @@ class FastMixtureGeneralizedGaussianEnergy(Energy):
                 {
                     f"precision_matrix_{k}": wandb.Image(plt),
                 },
+                step=step,
             )
             plt.close()
 
@@ -266,6 +267,7 @@ class FastMixtureGeneralizedGaussianEnergy(Energy):
             energy_per_cluster = (
                 -torch.nn.functional.log_softmax(
                     self.logit_pi,
+                    dim=-1,
                 ).unsqueeze(0)
                 + energy_per_cluster
             )
