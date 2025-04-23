@@ -611,7 +611,7 @@ def kent_mle(
         minus_log_likelihood_prime,
         callback=callback,
         full_output=1,
-        **bfgs_kwargs
+        **bfgs_kwargs,
     )
 
     x_opt = all_values[0]

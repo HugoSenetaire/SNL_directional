@@ -1,0 +1,1 @@
+Fast mixture is dedicated implementation that does not rely on the simpler model but already implements the full model.
