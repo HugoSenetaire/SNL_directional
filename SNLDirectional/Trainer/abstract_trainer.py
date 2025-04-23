@@ -21,6 +21,7 @@ class AbstractTrainer:
         lr=1e-4,
         weight_decay=0,
         no_wandb=False,
+        name_wandb=None,
     ) -> None:
 
         if not no_wandb:
@@ -28,6 +29,7 @@ class AbstractTrainer:
             wandb.init(
                 project="snl_directional",
                 entity="hugosenetaire",
+                name=name_wandb,
                 # mode="offline",
             )
             #    force=False)

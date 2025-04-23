@@ -46,9 +46,9 @@ class EMSNL(SNLTrainer):
             n_sample_train=n_sample_train,
             n_sample_test=n_sample_test,
             lr=lr,
+            name_wandb=None,
         )
 
-        self.complete_data = torch.cat([x[0] for x in iter(self.dataloader)], dim=0)
         self.stochastic_em = stochastic_em
 
     def get_optimizer(self, optimizer, lr, weight_decay):

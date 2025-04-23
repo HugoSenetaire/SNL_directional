@@ -30,6 +30,7 @@ class SNLTrainer(AbstractTrainer):
         n_sample_test=10_000,
         lr=1e-4,
         weight_decay=0,
+        name_wandb=None,
     ) -> None:
         super().__init__(
             energy=energy,
@@ -40,12 +41,19 @@ class SNLTrainer(AbstractTrainer):
             n_sample_test=n_sample_test,
             lr=lr,
             weight_decay=weight_decay,
+            name_wandb=name_wandb,
         )
+        self.complete_data = torch.cat([x[0] for x in iter(self.dataloader)], dim=0)
 
     def forward(self, x: torch.Tensor, n_sample: int) -> torch.Tensor:
         """
         Forward pass for the SNL.
         """
+        if hasattr(self.energy, "set_kmeans_centers"):
+            attribution = self.energy.set_kmeans_centers(
+                complete_data=self.complete_data
+            )
+
         energy_target = self.energy(x=x)
         # energy_proposal = self.energy(x_sample).reshape((n_sample,))
 
