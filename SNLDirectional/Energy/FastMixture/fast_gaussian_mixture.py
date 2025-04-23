@@ -4,7 +4,6 @@ import mpmath
 import numpy as np
 import torch
 import torch.nn as nn
-
 import wandb
 from SNLDirectional.Energy.energy import Energy
 from SNLDirectional.Energy.utils import get_polar_from_cartesian
@@ -31,7 +30,9 @@ class GaussianMixtureEnergy(Energy):
             )
 
         if learn_mu:
-            self.mu = nn.Parameter(torch.randn(num_cluster, dim, dtype=torch.float32))
+            self.mu = nn.Parameter(
+                torch.randn(num_cluster, dim, dtype=torch.float32), requires_grad=True
+            )
         else:
             self.register_buffer(
                 "mu", torch.randn(num_cluster, dim, dtype=torch.float32)
@@ -81,20 +82,20 @@ class GaussianMixtureEnergy(Energy):
         step=0,
     ):
         dic_params = {
-            f"mu_{c}_{k}": v.item()
+            f"mu_cluster_{c}_dim_{k}": v.item()
             for c in range(self.mu.shape[0])
             for k, v in enumerate(self.mu[c])
         }
         dic_params.update(
             {
-                f"log_sigma_{c}_{k}": v.item()
+                f"log_sigma_cluster_{c}_dim_{k}": v.item()
                 for c in range(self.log_sigma.shape[0])
                 for k, v in enumerate(self.log_sigma[c])
             }
         )
         dic_params.update(
             {
-                f"sigma_{c}_{k}": v.exp().item()
+                f"sigma_cluster_dim_{c}_{k}": v.exp().item()
                 for c in range(self.log_sigma.shape[0])
                 for k, v in enumerate(self.log_sigma[c])
             }
@@ -234,9 +235,9 @@ class GeneralizedGaussianMixtureEnergy(Energy):
         dic_params.update(super().get_parameters())
 
         pi = torch.nn.functional.log_softmax(self.logit_pi, dim=0).exp()
-        dic_params.update({f"pi_{c}": v.item() for c, v in enumerate(pi)})
+        dic_params.update({f"pi_cluster_{c}": v.item() for c, v in enumerate(pi)})
         dic_params.update(
-            {f"logit_pi_{c}": v.item() for c, v in enumerate(self.logit_pi)}
+            {f"logit_pi_cluster_{c}": v.item() for c, v in enumerate(self.logit_pi)}
         )
         return dic_params
 

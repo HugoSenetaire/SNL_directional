@@ -49,18 +49,8 @@ class SNLTrainer(AbstractTrainer):
         """
         Forward pass for the SNL.
         """
-        if hasattr(self.energy, "set_kmeans_centers"):
-            attribution = self.energy.set_kmeans_centers(
-                complete_data=self.complete_data
-            )
 
         energy_target = self.energy(x=x)
-        # energy_proposal = self.energy(x_sample).reshape((n_sample,))
-
-        # proposal_log_prob = torch.from_numpy(
-        #     self.proposal.log_prob(x_sample).detach().cpu().numpy()
-        # ).reshape((n_sample,))
-
         loss_target = energy_target.mean(dim=0, keepdim=True)
 
         loss_proposal = (

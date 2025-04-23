@@ -27,14 +27,18 @@ class FastMixtureGeneralizedGaussianEnergy(Energy):
         self.separate_normalisation = separate_normalisation
 
         if learn_pi:
-            self.logit_pi = nn.Parameter(torch.ones(num_cluster, dtype=torch.float32))
+            self.logit_pi = nn.Parameter(
+                torch.ones(num_cluster, dtype=torch.float32), requires_grad=True
+            )
         else:
             self.register_buffer(
                 "logit_pi", torch.ones(num_cluster, dtype=torch.float32)
             )
 
         if learn_mu:
-            self.mu = nn.Parameter(torch.randn(num_cluster, dim, dtype=torch.float32))
+            self.mu = nn.Parameter(
+                torch.randn(num_cluster, dim, dtype=torch.float32), requires_grad=True
+            )
         else:
             self.register_buffer(
                 "mu", torch.randn(num_cluster, dim, dtype=torch.float32)
@@ -44,20 +48,10 @@ class FastMixtureGeneralizedGaussianEnergy(Energy):
             self.explicit_bias = nn.parameter.Parameter(
                 torch.ones(self.num_cluster, dtype=torch.float32) * 10,
             )
-            print(
-                "SEPARATE NORMALISATION",
-                self.separate_normalisation,
-                self.explicit_bias.shape,
-            )
 
         else:
             self.explicit_bias = nn.parameter.Parameter(
                 torch.ones((1,), dtype=torch.float32) * 10,
-            )
-            print(
-                "SEPARATE NORMALISATION",
-                self.separate_normalisation,
-                self.explicit_bias.shape,
             )
 
     def set_kmeans_centers(

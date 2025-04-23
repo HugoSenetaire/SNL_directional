@@ -23,7 +23,6 @@ class AbstractTrainer:
         no_wandb=False,
         name_wandb=None,
     ) -> None:
-
         if not no_wandb:
             self.logger = wandb
             wandb.init(
@@ -97,7 +96,7 @@ class AbstractTrainer:
         )
         self.optimizer_explicit_bias = torch.optim.Adam(
             [self.energy.explicit_bias],
-            lr=1e-2,
+            lr=lr,
         )
 
     def forward(self, x: torch.Tensor, n_sample: int) -> torch.Tensor:
@@ -223,6 +222,10 @@ class AbstractTrainer:
         log_every: int = 100,
         plot_every: int = 1000,
     ) -> None:
+
+        if hasattr(self.energy, "set_kmeans_centers"):
+            _ = self.energy.set_kmeans_centers(complete_data=self.complete_data)
+
         current_dataloader = iter(self.dataloader)
 
         plot_data = next(current_dataloader)[0]
@@ -246,6 +249,7 @@ class AbstractTrainer:
             data=plot_data,
             attribution=None,
         )
+
         for step in tqdm.tqdm(range(n_iter + n_iter_pretrain)):
 
             # Forward pass
@@ -278,11 +282,9 @@ class AbstractTrainer:
                 # plot_curve(self.global_dic_train, self.global_param)
 
             # Update weights
-
             loss_dic["loss"].backward()
 
             self.optimizer_step(step=self.total_step, n_iter_pretrain=n_iter_pretrain)
-            # self.scheduler_step()
 
             # Evaluation :
             if step % eval_every == 0:
